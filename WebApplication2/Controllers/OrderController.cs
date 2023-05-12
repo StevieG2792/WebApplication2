@@ -32,7 +32,7 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPost("CreateOrder")]
-        public ActionResult Create([FromBody] OrderDto orderDto)
+        public ActionResult Create([FromBody] RetrieveOrderDto orderDto)
         {
             using (var scope = new TransactionScope())
             {
@@ -48,8 +48,7 @@ namespace WebApplication2.Controllers
             
             _orderRepository.InsertOrder(order);
             scope.Complete();
-                return new OkObjectResult("Order Saved, ID: "+ order.Id);
-               // return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order);
+            return new OkObjectResult("Order Saved, ID: "+ order.Id);
             }
 
         }
@@ -70,7 +69,7 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPut("UpdateOrder")]
-        public IActionResult UpdateOrder(int orderId, OrderDto orderDto)
+        public IActionResult UpdateOrder(int orderId, RetrieveOrderDto orderDto)
         {
             if (orderDto != null)
             {

@@ -6,10 +6,10 @@ namespace WebApplication2.ProductRepository
     {
         void InsertOrder(Order order);
         void UpdateOrderAddress(string address, int orderId);
-        void UpdateOrder(int orderId, OrderDto orderDto);
+        void UpdateOrder(int orderId, RetrieveOrderDto orderDto);
         void CancelOrder(int orderId);
-        OrderDto GetOrderByID(int orderId);
-        IEnumerable<OrderDto> GetOrderByPage (int orderId);
+        RetrieveOrderDto GetOrderByID(int orderId);
+        IEnumerable<RetrieveOrderDto> GetOrderByPage (int orderId);
         void Save();
     }
 }

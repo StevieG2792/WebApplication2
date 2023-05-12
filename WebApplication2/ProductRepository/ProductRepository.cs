@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApplication2.DBContexts;
-using WebApplication2.Models;
+using WebApplication2.Models.Products;
 
 namespace WebApplication2.ProductRepository
 {

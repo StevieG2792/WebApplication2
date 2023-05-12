@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Runtime.CompilerServices;
 using WebApplication2.DBContexts;
 using WebApplication2.Models;
-using static WebApplication2.Models.OrderDto;
+using static WebApplication2.Models.RetrieveOrderDto;
 
 namespace WebApplication2.ProductRepository
 {
@@ -29,7 +29,7 @@ namespace WebApplication2.ProductRepository
             Save();
         }
 
-        public void UpdateOrder(int orderId, OrderDto orderDto)
+        public void UpdateOrder(int orderId, RetrieveOrderDto orderDto)
         {
 
            var orderDetails = (from item in orderDto.Details
@@ -59,20 +59,20 @@ namespace WebApplication2.ProductRepository
             Save();
         }
 
-        public IEnumerable<OrderDto> GetOrderByPage(int page)
+        public IEnumerable<RetrieveOrderDto> GetOrderByPage(int page)
         {
             int RecordsToSkip = (page - 1) * 2; //As 2 records per page
             var order = _dbContext.Orders.Include("OrderDetails.Product").OrderBy(b => b.Id).Skip(RecordsToSkip).Take(2).ToList();
-            var orderInfo = new List<OrderDto>();
+            var orderInfo = new List<RetrieveOrderDto>();
             foreach (var item in order)
             {
-                orderInfo.Add(new OrderDto
+                orderInfo.Add(new RetrieveOrderDto
                 {
                     Customer = item.Customer,
                     Address = item.Address,
                     Status = item.Status,
                     Details = from d in item.OrderDetails
-                              select new OrderDto.Detail()
+                              select new RetrieveOrderDto.Detail()
                               {
                                   ProductId = d.Product.Id,
                                   Product = d.Product.Name,
@@ -86,18 +86,18 @@ namespace WebApplication2.ProductRepository
             return orderInfo;
         }
 
-        public OrderDto GetOrderByID(int orderId)
+        public RetrieveOrderDto GetOrderByID(int orderId)
         {
             Order order = _dbContext.Orders.Include("OrderDetails.Product")
             .First(o => o.Id == orderId);
 
-            return new OrderDto()
+            return new RetrieveOrderDto()
             {
                 Customer = order.Customer,
                 Address = order.Address,
                 Status = order.Status,
                 Details = from d in order.OrderDetails
-                          select new OrderDto.Detail()
+                          select new RetrieveOrderDto.Detail()
                           {
                               ProductId = d.Product.Id,
                               Product = d.Product.Name,

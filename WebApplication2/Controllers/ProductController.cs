@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Transactions;
-using WebApplication2.Models;
+using WebApplication2.Models.Products;
 using WebApplication2.ProductRepository;
 
 namespace WebApplication2.Controllers

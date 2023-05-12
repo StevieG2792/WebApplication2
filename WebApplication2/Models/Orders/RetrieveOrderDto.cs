@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace WebApplication2.Models
+namespace WebApplication2.Models.Orders
 {
-    public class OrderDto
+    public class RetrieveOrderDto
     {
         public class Detail
         {
