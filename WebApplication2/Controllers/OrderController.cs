@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Transactions;
 using WebApplication2.Models;
+using WebApplication2.Models.Orders;
 using WebApplication2.ProductRepository;
 
 namespace WebApplication2.Controllers
@@ -32,7 +33,7 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPost("CreateOrder")]
-        public ActionResult Create([FromBody] RetrieveOrderDto orderDto)
+        public ActionResult Create([FromBody] CreateOrderDto orderDto)
         {
             using (var scope = new TransactionScope())
             {
@@ -69,7 +70,7 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPut("UpdateOrder")]
-        public IActionResult UpdateOrder(int orderId, RetrieveOrderDto orderDto)
+        public IActionResult UpdateOrder(int orderId, UpdateOrderDto orderDto)
         {
             if (orderDto != null)
             {

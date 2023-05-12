@@ -1,4 +1,4 @@
-﻿using WebApplication2.Models;
+﻿using WebApplication2.Models.Orders;
 
 namespace WebApplication2.ProductRepository
 {
@@ -6,7 +6,7 @@ namespace WebApplication2.ProductRepository
     {
         void InsertOrder(Order order);
         void UpdateOrderAddress(string address, int orderId);
-        void UpdateOrder(int orderId, RetrieveOrderDto orderDto);
+        void UpdateOrder(int orderId, UpdateOrderDto orderDto);
         void CancelOrder(int orderId);
         RetrieveOrderDto GetOrderByID(int orderId);
         IEnumerable<RetrieveOrderDto> GetOrderByPage (int orderId);

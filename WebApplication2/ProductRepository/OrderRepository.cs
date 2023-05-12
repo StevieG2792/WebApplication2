@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Runtime.CompilerServices;
 using WebApplication2.DBContexts;
-using WebApplication2.Models;
-using static WebApplication2.Models.RetrieveOrderDto;
+using WebApplication2.Models.Orders;
+using static WebApplication2.Models.Orders.RetrieveOrderDto;
 
 namespace WebApplication2.ProductRepository
 {
@@ -29,7 +29,7 @@ namespace WebApplication2.ProductRepository
             Save();
         }
 
-        public void UpdateOrder(int orderId, RetrieveOrderDto orderDto)
+        public void UpdateOrder(int orderId, UpdateOrderDto orderDto)
         {
 
            var orderDetails = (from item in orderDto.Details

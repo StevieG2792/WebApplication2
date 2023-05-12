@@ -1,6 +1,7 @@
 ﻿using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WebApplication2.Models.Products;
 
 namespace WebApplication2.Models.Orders
 {

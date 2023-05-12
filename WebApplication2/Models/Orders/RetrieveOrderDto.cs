@@ -6,12 +6,10 @@ namespace WebApplication2.Models.Orders
 {
     public class RetrieveOrderDto
     {
-        public class Detail
+        public class Detail : DetailBase
         {
-            public int ProductId { get; set; }
             public string Product { get; set; }
             public decimal Price { get; set; }
-            public int Quantity { get; set; }
         }
         public string Customer { get; set; }
         public string Address { get; set; }
