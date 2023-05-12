@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Runtime.CompilerServices;
 using WebApplication2.DBContexts;
@@ -11,15 +12,26 @@ namespace WebApplication2.ProductRepository
     {
         private readonly ProductContext _dbContext;
 
-        public OrderRepository(ProductContext dbContext)
+        public OrderRepository(ProductContext dbContext) 
         {
             _dbContext = dbContext;
         }
 
-        public void InsertOrder(Order order)
+        public IActionResult InsertOrder(CreateOrderDto orderDto)
         {
+            var order = new Order()
+            {
+                Customer = orderDto.Customer,
+                Address = orderDto.Address,
+                Status = "Active",
+                OrderDetails = (from item in orderDto.Details
+                                select new OrderDetail()
+                                { ProductId = item.ProductId, Quantity = item.Quantity }).ToList()
+            };
+
             _dbContext.Add(order);
             Save();
+            return new OkObjectResult("Order Saved, ID: " + order.Id);
         }
 
         public void UpdateOrderAddress(string address, int orderId)
@@ -29,10 +41,15 @@ namespace WebApplication2.ProductRepository
             Save();
         }
 
-        public void UpdateOrder(int orderId, UpdateOrderDto orderDto)
+        public IActionResult UpdateOrder(int orderId, UpdateOrderDto orderDto)
         {
+            var checkStatus = _dbContext.Orders.FirstOrDefault(x => x.Id == orderId && x.Status != "Completed"); //We won't update submitted orders
+            if (checkStatus == null) 
+            {
+                return new BadRequestObjectResult("Order Id: " + orderId + " has already been processed for delivery."); 
+            }
 
-           var orderDetails = (from item in orderDto.Details
+            var orderDetails = (from item in orderDto.Details
                                         select new OrderDetail()
                                         { ProductId = item.ProductId, Quantity = item.Quantity, OrderId = orderId }).ToList();
 
@@ -50,11 +67,19 @@ namespace WebApplication2.ProductRepository
             }
 
             Save();
+            return new OkObjectResult("Order Id: " + orderId + " has been updated.");
         }
 
         public void CancelOrder(int orderId)
         {
             var order = new Order() { Status = "Cancelled", Id = orderId };
+            _dbContext.Orders.Attach(order).Property(x => x.Status).IsModified = true;
+            Save();
+        }
+
+        public void SubmitOrder(int orderId)
+        {
+            var order = new Order() { Status = "Completed", Id = orderId };
             _dbContext.Orders.Attach(order).Property(x => x.Status).IsModified = true;
             Save();
         }

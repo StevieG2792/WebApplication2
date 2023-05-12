@@ -33,23 +33,13 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPost("CreateOrder")]
-        public ActionResult Create([FromBody] CreateOrderDto orderDto)
+        public IActionResult Create([FromBody] CreateOrderDto orderDto)
         {
             using (var scope = new TransactionScope())
-            {
-                var order = new Order()
-                {
-                    Customer = orderDto.Customer,
-                    Address = orderDto.Address,
-                    Status = "Active",
-                    OrderDetails = (from item in orderDto.Details
-                                    select new OrderDetail()
-                                    { ProductId = item.ProductId, Quantity = item.Quantity }).ToList()
-                };
-            
-            _orderRepository.InsertOrder(order);
-            scope.Complete();
-            return new OkObjectResult("Order Saved, ID: "+ order.Id);
+            {                         
+                var result = _orderRepository.InsertOrder(orderDto);
+                scope.Complete();
+                return result;
             }
 
         }
@@ -70,15 +60,15 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPut("UpdateOrder")]
-        public IActionResult UpdateOrder(int orderId, UpdateOrderDto orderDto)
+        public IActionResult UpdateOrderItems(int orderId, UpdateOrderDto orderDto)
         {
             if (orderDto != null)
             {
                 using (var scope = new TransactionScope())
                 {
-                    _orderRepository.UpdateOrder(orderId, orderDto);
+                  var result =  _orderRepository.UpdateOrder(orderId, orderDto);
                     scope.Complete();
-                    return new OkResult();
+                    return result;
                 }
             }
             return new NoContentResult();
@@ -98,6 +88,21 @@ namespace WebApplication2.Controllers
             }
             return new NoContentResult();
         }
-       
+
+        [HttpPut("SubmitOrder")]
+        public IActionResult SubmitOrder(int orderId)
+        {
+            if (orderId > 0)
+            {
+                using (var scope = new TransactionScope())
+                {
+                    _orderRepository.SubmitOrder(orderId);
+                    scope.Complete();
+                    return new OkResult();
+                }
+            }
+            return new NoContentResult();
+        }
+
     }
 }

@@ -1,13 +1,15 @@
-﻿using WebApplication2.Models.Orders;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication2.Models.Orders;
 
 namespace WebApplication2.ProductRepository
 {
     public interface IOrderRepository
     {
-        void InsertOrder(Order order);
+        IActionResult InsertOrder(CreateOrderDto orderDto);
         void UpdateOrderAddress(string address, int orderId);
-        void UpdateOrder(int orderId, UpdateOrderDto orderDto);
+        IActionResult UpdateOrder(int orderId, UpdateOrderDto orderDto);
         void CancelOrder(int orderId);
+        void SubmitOrder(int orderId);
         RetrieveOrderDto GetOrderByID(int orderId);
         IEnumerable<RetrieveOrderDto> GetOrderByPage (int orderId);
         void Save();
