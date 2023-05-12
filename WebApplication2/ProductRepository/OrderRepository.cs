@@ -106,7 +106,7 @@ namespace WebApplication2.ProductRepository
                               }
                 }); 
               
-            };
+            }
 
             return orderInfo;
         }

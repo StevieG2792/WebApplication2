@@ -11,7 +11,7 @@ namespace WebApplication2.ProductRepository
         void CancelOrder(int orderId);
         void SubmitOrder(int orderId);
         RetrieveOrderDto GetOrderByID(int orderId);
-        IEnumerable<RetrieveOrderDto> GetOrderByPage (int orderId);
+        IEnumerable<RetrieveOrderDto> GetOrderByPage (int page);
         void Save();
     }
 }
