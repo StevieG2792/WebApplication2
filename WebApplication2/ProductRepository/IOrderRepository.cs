@@ -6,11 +6,11 @@ namespace WebApplication2.ProductRepository
     public interface IOrderRepository
     {
         IActionResult InsertOrder(CreateOrderDto orderDto);
-        void UpdateOrderAddress(string address, int orderId);
+        IActionResult UpdateOrderAddress(string address, int orderId);
         IActionResult UpdateOrder(int orderId, UpdateOrderDto orderDto);
-        void CancelOrder(int orderId);
-        void SubmitOrder(int orderId);
-        RetrieveOrderDto GetOrderByID(int orderId);
+        IActionResult CancelOrder(int orderId);
+        IActionResult SubmitOrder(int orderId);
+        IActionResult GetOrderByID(int orderId);
         IEnumerable<RetrieveOrderDto> GetOrderByPage (int page);
         void Save();
     }

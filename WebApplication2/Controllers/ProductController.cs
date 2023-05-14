@@ -29,7 +29,12 @@ namespace WebApplication2.Controllers
         public IActionResult GetProductById(int id)
         {
             var product = _productRepository.GetProductByID(id);
+
+            if (product != null) 
+            { 
             return new OkObjectResult(product);
+            }
+            return new BadRequestObjectResult("No product exists with this Id: " + id);
         }
 
         [HttpPost("CreateProduct")]
@@ -56,9 +61,9 @@ namespace WebApplication2.Controllers
             {
                 using (var scope = new TransactionScope())
                 {
-                    _productRepository.UpdateProduct(product);
+                    var result = _productRepository.UpdateProduct(product);
                     scope.Complete();
-                    return new OkResult();
+                    return result;
                 }
             }
             return new NoContentResult();
@@ -67,8 +72,7 @@ namespace WebApplication2.Controllers
         [HttpDelete("DeleteProduct")]
         public IActionResult Delete(int id)
         {
-            _productRepository.DeleteProduct(id);
-            return new OkResult();
+            return _productRepository.DeleteProduct(id);
         }
     }
 }

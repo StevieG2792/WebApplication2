@@ -22,7 +22,7 @@ namespace WebApplication2.Controllers
         public IActionResult GetOrderById(int id)
         {
             var order = _orderRepository.GetOrderByID(id);
-            return new OkObjectResult(order);
+            return order;
         }
 
         [HttpGet("GetOrderByPage")]
@@ -51,9 +51,9 @@ namespace WebApplication2.Controllers
             {
                 using (var scope = new TransactionScope())
                 {
-                    _orderRepository.UpdateOrderAddress(address, orderId);
+                    var result = _orderRepository.UpdateOrderAddress(address, orderId);
                     scope.Complete();
-                    return new OkResult();
+                    return result;
                 }
             }
             return new NoContentResult();
@@ -81,9 +81,9 @@ namespace WebApplication2.Controllers
             {
                 using (var scope = new TransactionScope())
                 {
-                    _orderRepository.CancelOrder(orderId);
+                    var result = _orderRepository.CancelOrder(orderId);
                     scope.Complete();
-                    return new OkResult();
+                    return result;
                 }
             }
             return new NoContentResult();
@@ -96,9 +96,9 @@ namespace WebApplication2.Controllers
             {
                 using (var scope = new TransactionScope())
                 {
-                    _orderRepository.SubmitOrder(orderId);
+                    var result = _orderRepository.SubmitOrder(orderId);
                     scope.Complete();
-                    return new OkResult();
+                    return result;
                 }
             }
             return new NoContentResult();

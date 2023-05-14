@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApplication2.DBContexts;
 using WebApplication2.Models.Products;
 
@@ -13,11 +14,17 @@ namespace WebApplication2.ProductRepository
             _dbContext = dbContext;
         }
 
-        public void DeleteProduct(int productId)
+        public IActionResult DeleteProduct(int productId)
         {
             var product = _dbContext.Products.Find(productId);
-            _dbContext.Products.Remove(product);
-            Save();
+            if (product != null)
+            {
+                _dbContext.Products.Remove(product);
+                Save();
+                return new OkObjectResult("Product deleted: " + productId);
+            }
+
+            return new BadRequestObjectResult("No Product with this Id exists: " + productId);
            
         }
 
@@ -36,6 +43,7 @@ namespace WebApplication2.ProductRepository
         {
             _dbContext.Add(product);
             Save();
+
         }
 
         public void Save()
@@ -43,10 +51,16 @@ namespace WebApplication2.ProductRepository
             _dbContext.SaveChanges();
         }
 
-        public void UpdateProduct(Product product)
+        public IActionResult UpdateProduct(Product product)
         {
-            _dbContext.Entry(product).State = EntityState.Modified;
-            Save();
+            var existCheck = _dbContext.Products.Find(product.Id);
+            if (existCheck != null)
+            {
+                _dbContext.Entry(product).State = EntityState.Modified;
+                Save();
+                return new OkObjectResult("Product has been updated Id: " + product.Id);
+            }
+            return new BadRequestObjectResult("No product exists with this Id: " + product.Id);
         }
 
     }
